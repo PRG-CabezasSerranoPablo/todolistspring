@@ -5,21 +5,91 @@ import java.time.LocalDateTime;
 public class Tarea {
 
     private int codigo;
-
-    private String nombre;
-
     private String descripcion;
+    private String usuario;
+    private LocalDateTime fechaVencimiento;
+    private String prioridad;
+    private String categoria;
+    private boolean realizada;
 
-    private LocalDateTime creadoEn;
+    public Tarea() {
+    }
 
-    public Tarea(int codigo, String nombre, String descripcion) {
+    public Tarea(int codigo, String descripcion, String usuario, LocalDateTime fechaVencimiento,
+                 String prioridad, String categoria, boolean realizada) {
         this.codigo = codigo;
-        this.nombre = nombre;
         this.descripcion = descripcion;
-        this.creadoEn = LocalDateTime.now();
+        this.usuario = usuario;
+        this.fechaVencimiento = fechaVencimiento;
+        this.prioridad = prioridad;
+        this.categoria = categoria;
+        this.realizada = realizada;
+    }
+
+    // Constructor sencillo para mantener la plantilla inicial funcionando.
+    public Tarea(int codigo, String usuario, String descripcion) {
+        this.codigo = codigo;
+        this.usuario = usuario;
+        this.descripcion = descripcion;
+        this.fechaVencimiento = LocalDateTime.now();
+        this.prioridad = "Mitjana";
+        this.categoria = "";
+        this.realizada = false;
     }
 
     public int getCodigo() {
         return codigo;
+    }
+
+    public void setCodigo(int codigo) {
+        this.codigo = codigo;
+    }
+
+    public String getDescripcion() {
+        return descripcion;
+    }
+
+    public void setDescripcion(String descripcion) {
+        this.descripcion = descripcion;
+    }
+
+    public String getUsuario() {
+        return usuario;
+    }
+
+    public void setUsuario(String usuario) {
+        this.usuario = usuario;
+    }
+
+    public LocalDateTime getFechaVencimiento() {
+        return fechaVencimiento;
+    }
+
+    public void setFechaVencimiento(LocalDateTime fechaVencimiento) {
+        this.fechaVencimiento = fechaVencimiento;
+    }
+
+    public String getPrioridad() {
+        return prioridad;
+    }
+
+    public void setPrioridad(String prioridad) {
+        this.prioridad = prioridad;
+    }
+
+    public String getCategoria() {
+        return categoria;
+    }
+
+    public void setCategoria(String categoria) {
+        this.categoria = categoria;
+    }
+
+    public boolean isRealizada() {
+        return realizada;
+    }
+
+    public void setRealizada(boolean realizada) {
+        this.realizada = realizada;
     }
 }
