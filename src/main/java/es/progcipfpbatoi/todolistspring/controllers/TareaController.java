@@ -17,6 +17,11 @@ public class TareaController {
     @Autowired
     private TareaRepository tareaRepository;
 
+    @GetMapping("/")
+    public String menuActionView() {
+        return "menu_view";
+    }
+
     @GetMapping("/tarea-form")
     public String tareaFormActionView(){
         return "tarea_form_view";
