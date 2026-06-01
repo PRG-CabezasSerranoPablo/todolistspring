@@ -8,7 +8,7 @@ public class Tarea {
     private String descripcion;
     private String usuario;
     private LocalDateTime fechaVencimiento;
-    private String prioridad;
+    private Prioridad prioridad;
     private String categoria;
     private boolean realizada;
 
@@ -16,7 +16,7 @@ public class Tarea {
     }
 
     public Tarea(int codigo, String descripcion, String usuario, LocalDateTime fechaVencimiento,
-                 String prioridad, String categoria, boolean realizada) {
+                 Prioridad prioridad, String categoria, boolean realizada) {
         this.codigo = codigo;
         this.descripcion = descripcion;
         this.usuario = usuario;
@@ -32,7 +32,7 @@ public class Tarea {
         this.usuario = usuario;
         this.descripcion = descripcion;
         this.fechaVencimiento = LocalDateTime.now();
-        this.prioridad = "Mitjana";
+        this.prioridad = Prioridad.MITJANA;
         this.categoria = "";
         this.realizada = false;
     }
@@ -69,11 +69,11 @@ public class Tarea {
         this.fechaVencimiento = fechaVencimiento;
     }
 
-    public String getPrioridad() {
+    public Prioridad getPrioridad() {
         return prioridad;
     }
 
-    public void setPrioridad(String prioridad) {
+    public void setPrioridad(Prioridad prioridad) {
         this.prioridad = prioridad;
     }
 
