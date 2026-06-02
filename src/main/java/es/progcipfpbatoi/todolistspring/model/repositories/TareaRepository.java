@@ -1,77 +1,64 @@
 package es.progcipfpbatoi.todolistspring.model.repositories;
 
 import es.progcipfpbatoi.todolistspring.exceptions.NotFoundException;
+import es.progcipfpbatoi.todolistspring.model.daos.TareaDAO;
 import es.progcipfpbatoi.todolistspring.model.entities.Tarea;
 import org.springframework.stereotype.Repository;
 
+import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 
 @Repository
 public class TareaRepository {
 
-    private ArrayList<Tarea> tareas;
-    private int siguienteCodigo;
+    private TareaDAO tareaDAO;
 
-    public TareaRepository() {
-        this.tareas = new ArrayList<>();
-        this.siguienteCodigo = 1;
+    public TareaRepository(TareaDAO tareaDAO) {
+        this.tareaDAO = tareaDAO;
     }
 
     public void add(Tarea tarea) {
-        tarea.setCodigo(siguienteCodigo);
-        siguienteCodigo++;
-        this.tareas.add(tarea);
+        try {
+            tareaDAO.add(tarea);
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     public Tarea get(int codTarea) throws NotFoundException {
-        for (Tarea tarea : tareas) {
-            if (tarea.getCodigo() == codTarea) {
-                return tarea;
-            }
+        try {
+            return tareaDAO.get(codTarea);
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
         }
-
-        throw new NotFoundException("La tasca amb codi " + codTarea + " no existeix");
     }
 
     public ArrayList<Tarea> findAll() {
-        return tareas;
+        try {
+            return tareaDAO.findAll();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     public ArrayList<Tarea> findAll(String usuario) {
-        ArrayList<Tarea> tareasEncontradas = new ArrayList<>();
-
-        // Busqueda sencilla por usuario, como se pide en el formulario.
-        for (Tarea tarea : tareas) {
-            if (tarea.getUsuario().equalsIgnoreCase(usuario)) {
-                tareasEncontradas.add(tarea);
-            }
-        }
-
-        return tareasEncontradas;
+        return findAll(usuario, null, null);
     }
 
     public ArrayList<Tarea> findAll(String usuario, LocalDate fecha, Boolean realizada) {
-        ArrayList<Tarea> tareasEncontradas = new ArrayList<>();
-
-        for (Tarea tarea : tareas) {
-            boolean coincideUsuario = usuario == null || usuario.isBlank()
-                    || tarea.getUsuario().equalsIgnoreCase(usuario);
-            boolean coincideFecha = fecha == null
-                    || tarea.getFechaVencimiento().toLocalDate().equals(fecha);
-            boolean coincideEstado = realizada == null || tarea.isRealizada() == realizada;
-
-            if (coincideUsuario && coincideFecha && coincideEstado) {
-                tareasEncontradas.add(tarea);
-            }
+        try {
+            return tareaDAO.findAll(usuario, fecha, realizada);
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
         }
-
-        return tareasEncontradas;
     }
 
     public Tarea delete(int codTarea) throws NotFoundException {
-        Tarea tarea = get(codTarea);
-        tareas.remove(tarea);
-        return tarea;
+        try {
+            return tareaDAO.delete(codTarea);
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
 }
