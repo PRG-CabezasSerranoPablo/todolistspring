@@ -1,5 +1,7 @@
 HELP.md
 target/
+tareas-perst.dbs
+*.dbs
 !.mvn/wrapper/maven-wrapper.jar
 !**/src/main/**/target/
 !**/src/test/**/target/
