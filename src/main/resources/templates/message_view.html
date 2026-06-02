@@ -5,7 +5,7 @@
     <title>Missatge</title>
 </head>
 <body>
-<h1>Missatge</h1>
+<h1 th:text="${titulo != null ? titulo : 'Missatge'}">Missatge</h1>
 
 <p th:text="${mensaje}"></p>
 

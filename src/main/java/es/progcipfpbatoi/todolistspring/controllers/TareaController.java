@@ -67,6 +67,7 @@ public class TareaController {
             model.addAttribute("tarea", tareaRepository.get(codigo));
             return "tarea_detail_view";
         } catch (NotFoundException e) {
+            model.addAttribute("titulo", "Tasca no trobada");
             model.addAttribute("mensaje", e.getMessage());
             return "message_view";
         }
@@ -76,8 +77,10 @@ public class TareaController {
     public String tareaDeleteActionView(@RequestParam int codigo, Model model) {
         try {
             Tarea tarea = tareaRepository.delete(codigo);
+            model.addAttribute("titulo", "Tasca eliminada");
             model.addAttribute("mensaje", "Tasca " + tarea.getCodigo() + " eliminada amb exit");
         } catch (NotFoundException e) {
+            model.addAttribute("titulo", "Tasca no trobada");
             model.addAttribute("mensaje", e.getMessage());
         }
 
