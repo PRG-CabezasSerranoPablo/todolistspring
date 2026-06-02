@@ -2,7 +2,6 @@ package es.progcipfpbatoi.todolistspring.model.repositories;
 
 import es.progcipfpbatoi.todolistspring.exceptions.NotFoundException;
 import es.progcipfpbatoi.todolistspring.model.entities.Tarea;
-
 import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
@@ -11,41 +10,49 @@ import java.util.ArrayList;
 public class TareaRepository {
 
     private ArrayList<Tarea> tareas;
+    private int siguienteCodigo;
 
     public TareaRepository() {
         this.tareas = new ArrayList<>();
+        this.siguienteCodigo = 1;
     }
 
-    /**
-     * Añade la Tarea recibida como argumento a la base de datos en memoria
-     * @param tarea
-     */
     public void add(Tarea tarea) {
+        tarea.setCodigo(siguienteCodigo);
+        siguienteCodigo++;
         this.tareas.add(tarea);
     }
 
-    /**
-     * Obtiene la Tarea con codigo @codTarea. En caso de que no la encuentre devolverá una excepción
-     * @NotFoundException
-     *
-     * @param codTarea
-     */
     public Tarea get(int codTarea) throws NotFoundException {
-        throw new NotFoundException("La tarea con codigo xxxx no existe");
+        for (Tarea tarea : tareas) {
+            if (tarea.getCodigo() == codTarea) {
+                return tarea;
+            }
+        }
+
+        throw new NotFoundException("La tasca amb codi " + codTarea + " no existeix");
     }
 
-    /**
-     *  Devuelve el listado de todas las tareas.
-     */
     public ArrayList<Tarea> findAll() {
-        return null;
+        return tareas;
     }
 
-    /**
-     *  Devuelve el listado de todas las tareas cuyo atributo nombre coincide con @user
-     */
-    public ArrayList<Tarea> findAll(String user) {
-        return null;
+    public ArrayList<Tarea> findAll(String usuario) {
+        ArrayList<Tarea> tareasEncontradas = new ArrayList<>();
+
+        // Busqueda sencilla por usuario, como se pide en el formulario.
+        for (Tarea tarea : tareas) {
+            if (tarea.getUsuario().equalsIgnoreCase(usuario)) {
+                tareasEncontradas.add(tarea);
+            }
+        }
+
+        return tareasEncontradas;
     }
 
+    public Tarea delete(int codTarea) throws NotFoundException {
+        Tarea tarea = get(codTarea);
+        tareas.remove(tarea);
+        return tarea;
+    }
 }
