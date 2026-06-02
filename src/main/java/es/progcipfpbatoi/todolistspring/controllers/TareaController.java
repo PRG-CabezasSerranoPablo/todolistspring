@@ -5,6 +5,7 @@ import es.progcipfpbatoi.todolistspring.model.entities.Tarea;
 import es.progcipfpbatoi.todolistspring.model.repositories.TareaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -28,6 +29,12 @@ public class TareaController {
     @GetMapping("/tarea-form")
     public String tareaFormActionView() {
         return "tarea_form_view";
+    }
+
+    @GetMapping("/tareas-list")
+    public String tareasListActionView(Model model) {
+        model.addAttribute("tareas", tareaRepository.findAll());
+        return "tarea_list_view";
     }
 
     @PostMapping("/tarea-add")

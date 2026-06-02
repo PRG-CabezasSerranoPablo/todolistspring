@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Llistat de tasques</title>
+</head>
+<body>
+<h1>Llistat complet de tasques</h1>
+
+<p th:if="${tareas.isEmpty()}">Encara no hi ha tasques guardades.</p>
+
+<table border="1" th:if="${!tareas.isEmpty()}">
+    <thead>
+    <tr>
+        <th>Codi</th>
+        <th>Descripcio</th>
+        <th>Usuari</th>
+        <th>Venciment</th>
+        <th>Prioritat</th>
+        <th>Categoria</th>
+        <th>Realitzada</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="tarea : ${tareas}">
+        <td th:text="${tarea.codigo}"></td>
+        <td th:text="${tarea.descripcion}"></td>
+        <td th:text="${tarea.usuario}"></td>
+        <td th:text="${tarea.fechaVencimiento}"></td>
+        <td th:text="${tarea.prioridad.texto}"></td>
+        <td th:text="${tarea.categoria}"></td>
+        <td th:text="${tarea.realizada ? 'Si' : 'No'}"></td>
+    </tr>
+    </tbody>
+</table>
+
+<p><a th:href="@{/}">Tornar al menu principal</a></p>
+<p><a th:href="@{/tarea-form}">Afegir una nova tasca</a></p>
+</body>
+</html>
