@@ -1,5 +1,6 @@
 package es.progcipfpbatoi.todolistspring.controllers;
 
+import es.progcipfpbatoi.todolistspring.exceptions.DatabaseErrorException;
 import es.progcipfpbatoi.todolistspring.exceptions.NotFoundException;
 import es.progcipfpbatoi.todolistspring.model.entities.Prioridad;
 import es.progcipfpbatoi.todolistspring.model.entities.Tarea;
@@ -34,8 +35,12 @@ public class TareaController {
 
     @GetMapping("/tareas-list")
     public String tareasListActionView(Model model) {
-        model.addAttribute("tareas", tareaRepository.findAll());
-        return "tarea_list_view";
+        try {
+            model.addAttribute("tareas", tareaRepository.findAll());
+            return "tarea_list_view";
+        } catch (DatabaseErrorException e) {
+            return databaseError(model, e);
+        }
     }
 
     @GetMapping("/tareas-buscar")
@@ -57,8 +62,12 @@ public class TareaController {
             realizada = Boolean.valueOf(params.get("realizada"));
         }
 
-        model.addAttribute("tareas", tareaRepository.findAll(usuario, fecha, realizada));
-        return "tarea_search_view";
+        try {
+            model.addAttribute("tareas", tareaRepository.findAll(usuario, fecha, realizada));
+            return "tarea_search_view";
+        } catch (DatabaseErrorException e) {
+            return databaseError(model, e);
+        }
     }
 
     @GetMapping("/tarea-detail")
@@ -70,6 +79,8 @@ public class TareaController {
             model.addAttribute("titulo", "Tasca no trobada");
             model.addAttribute("mensaje", e.getMessage());
             return "message_view";
+        } catch (DatabaseErrorException e) {
+            return databaseError(model, e);
         }
     }
 
@@ -82,13 +93,15 @@ public class TareaController {
         } catch (NotFoundException e) {
             model.addAttribute("titulo", "Tasca no trobada");
             model.addAttribute("mensaje", e.getMessage());
+        } catch (DatabaseErrorException e) {
+            return databaseError(model, e);
         }
 
         return "message_view";
     }
 
     @PostMapping("/tarea-add")
-    public String postAddAction(@RequestParam Map<String, String> params) {
+    public String postAddAction(@RequestParam Map<String, String> params, Model model) {
         String descripcion = params.get("descripcion");
         String usuario = params.get("usuario");
         String categoria = params.get("categoria");
@@ -101,8 +114,18 @@ public class TareaController {
         LocalDateTime fechaVencimiento = LocalDateTime.of(fecha, hora);
 
         Tarea tarea = new Tarea(0, descripcion, usuario, fechaVencimiento, prioridad, categoria, realizada);
-        tareaRepository.add(tarea);
+        try {
+            tareaRepository.add(tarea);
+        } catch (DatabaseErrorException e) {
+            return databaseError(model, e);
+        }
 
         return "redirect:/tareas-buscar";
+    }
+
+    private String databaseError(Model model, DatabaseErrorException e) {
+        model.addAttribute("titulo", "Error de base de dades");
+        model.addAttribute("mensaje", e.getMessage());
+        return "message_view";
     }
 }
