@@ -1,16 +1,56 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Gestor Tareas</title>
+    <title>Afegir tasca</title>
 </head>
 <body>
-<h1>Añadir Nueva Tarea</h1>
+<h1>Afegir una nova tasca</h1>
+
 <form action="/tarea-add" method="post">
-    <label>Codigo: <input name="code" type="number" required></label><br>
-    <label>Nombre: <input name="user" type="text" required></label><br>
-    <label>Descripción: <input name="description" type="text" required></label><br>
-    <input type="submit" value="añadir" required>
+    <label>Descripcio:
+        <input name="descripcion" type="text" required>
+    </label>
+    <br>
+
+    <label>Usuari:
+        <input name="usuario" type="text" required>
+    </label>
+    <br>
+
+    <label>Data de venciment:
+        <input name="fecha" type="date" required>
+    </label>
+    <br>
+
+    <label>Hora de venciment:
+        <input name="hora" type="time" required>
+    </label>
+    <br>
+
+    <label>Prioritat:
+        <select name="prioridad" required>
+            <option value="ALTA">Alta</option>
+            <option value="MITJANA" selected>Mitjana</option>
+            <option value="BAIXA">Baixa</option>
+        </select>
+    </label>
+    <br>
+
+    <label>Categoria:
+        <input name="categoria" type="text">
+    </label>
+    <br>
+
+    <label>
+        <input name="realizada" type="checkbox" value="true">
+        Tasca realitzada
+    </label>
+    <br>
+
+    <input type="submit" value="Afegir">
 </form>
+
+<p><a th:href="@{/}">Tornar al menu principal</a></p>
 </body>
 </html>
