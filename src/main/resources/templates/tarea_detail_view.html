@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Detall tasca</title>
+</head>
+<body>
+<h1>Detall de la tasca</h1>
+
+<ul>
+    <li><strong>Codi:</strong> <span th:text="${tarea.codigo}"></span></li>
+    <li><strong>Descripcio:</strong> <span th:text="${tarea.descripcion}"></span></li>
+    <li><strong>Usuari:</strong> <span th:text="${tarea.usuario}"></span></li>
+    <li><strong>Venciment:</strong> <span th:text="${tarea.fechaVencimiento}"></span></li>
+    <li><strong>Prioritat:</strong> <span th:text="${tarea.prioridad.texto}"></span></li>
+    <li><strong>Categoria:</strong> <span th:text="${tarea.categoria}"></span></li>
+    <li><strong>Realitzada:</strong> <span th:text="${tarea.realizada ? 'Si' : 'No'}"></span></li>
+</ul>
+
+<p><a th:href="@{/tarea-delete(codigo=${tarea.codigo})}">Esborrar tasca</a></p>
+<p><a th:href="@{/tareas-list}">Tornar al llistat</a></p>
+<p><a th:href="@{/}">Tornar al menu principal</a></p>
+</body>
+</html>

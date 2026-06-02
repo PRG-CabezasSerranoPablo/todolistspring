@@ -4,6 +4,7 @@ import es.progcipfpbatoi.todolistspring.exceptions.NotFoundException;
 import es.progcipfpbatoi.todolistspring.model.entities.Tarea;
 import org.springframework.stereotype.Repository;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 
 @Repository
@@ -43,6 +44,24 @@ public class TareaRepository {
         // Busqueda sencilla por usuario, como se pide en el formulario.
         for (Tarea tarea : tareas) {
             if (tarea.getUsuario().equalsIgnoreCase(usuario)) {
+                tareasEncontradas.add(tarea);
+            }
+        }
+
+        return tareasEncontradas;
+    }
+
+    public ArrayList<Tarea> findAll(String usuario, LocalDate fecha, Boolean realizada) {
+        ArrayList<Tarea> tareasEncontradas = new ArrayList<>();
+
+        for (Tarea tarea : tareas) {
+            boolean coincideUsuario = usuario == null || usuario.isBlank()
+                    || tarea.getUsuario().equalsIgnoreCase(usuario);
+            boolean coincideFecha = fecha == null
+                    || tarea.getFechaVencimiento().toLocalDate().equals(fecha);
+            boolean coincideEstado = realizada == null || tarea.isRealizada() == realizada;
+
+            if (coincideUsuario && coincideFecha && coincideEstado) {
                 tareasEncontradas.add(tarea);
             }
         }

@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Missatge</title>
+</head>
+<body>
+<h1>Missatge</h1>
+
+<p th:text="${mensaje}"></p>
+
+<p><a th:href="@{/tareas-list}">Tornar al llistat</a></p>
+<p><a th:href="@{/}">Tornar al menu principal</a></p>
+</body>
+</html>

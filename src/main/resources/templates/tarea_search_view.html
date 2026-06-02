@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Cercar tasques</title>
+</head>
+<body>
+<h1>Cercar tasques</h1>
+
+<form action="/tareas-search" method="get">
+    <label>Usuari:
+        <input name="usuario" type="text">
+    </label>
+    <br>
+
+    <label>Data:
+        <input name="fecha" type="date">
+    </label>
+    <br>
+
+    <label>Realitzada:
+        <select name="realizada">
+            <option value="">Totes</option>
+            <option value="true">Si</option>
+            <option value="false">No</option>
+        </select>
+    </label>
+    <br>
+
+    <input type="submit" value="Cercar">
+</form>
+
+<div th:if="${tareas != null}">
+    <h2>Resultats</h2>
+
+    <p th:if="${tareas.isEmpty()}">No s'han trobat tasques.</p>
+
+    <table border="1" th:if="${!tareas.isEmpty()}">
+        <thead>
+        <tr>
+            <th>Codi</th>
+            <th>Descripcio</th>
+            <th>Usuari</th>
+            <th>Venciment</th>
+            <th>Prioritat</th>
+            <th>Realitzada</th>
+            <th>Accions</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="tarea : ${tareas}">
+            <td th:text="${tarea.codigo}"></td>
+            <td th:text="${tarea.descripcion}"></td>
+            <td th:text="${tarea.usuario}"></td>
+            <td th:text="${tarea.fechaVencimiento}"></td>
+            <td th:text="${tarea.prioridad.texto}"></td>
+            <td th:text="${tarea.realizada ? 'Si' : 'No'}"></td>
+            <td>
+                <a th:href="@{/tarea-detail(codigo=${tarea.codigo})}">Detall</a>
+                |
+                <a th:href="@{/tarea-delete(codigo=${tarea.codigo})}">Esborrar</a>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+
+<p><a th:href="@{/}">Tornar al menu principal</a></p>
+<p><a th:href="@{/tarea-form}">Afegir una nova tasca</a></p>
+</body>
+</html>

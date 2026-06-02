@@ -19,6 +19,7 @@
         <th>Prioritat</th>
         <th>Categoria</th>
         <th>Realitzada</th>
+        <th>Accions</th>
     </tr>
     </thead>
     <tbody>
@@ -30,6 +31,11 @@
         <td th:text="${tarea.prioridad.texto}"></td>
         <td th:text="${tarea.categoria}"></td>
         <td th:text="${tarea.realizada ? 'Si' : 'No'}"></td>
+        <td>
+            <a th:href="@{/tarea-detail(codigo=${tarea.codigo})}">Detall</a>
+            |
+            <a th:href="@{/tarea-delete(codigo=${tarea.codigo})}">Esborrar</a>
+        </td>
     </tr>
     </tbody>
 </table>

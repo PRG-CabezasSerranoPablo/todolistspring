@@ -1,5 +1,6 @@
 package es.progcipfpbatoi.todolistspring.controllers;
 
+import es.progcipfpbatoi.todolistspring.exceptions.NotFoundException;
 import es.progcipfpbatoi.todolistspring.model.entities.Prioridad;
 import es.progcipfpbatoi.todolistspring.model.entities.Tarea;
 import es.progcipfpbatoi.todolistspring.model.repositories.TareaRepository;
@@ -35,6 +36,52 @@ public class TareaController {
     public String tareasListActionView(Model model) {
         model.addAttribute("tareas", tareaRepository.findAll());
         return "tarea_list_view";
+    }
+
+    @GetMapping("/tareas-buscar")
+    public String tareasBuscarActionView() {
+        return "tarea_search_view";
+    }
+
+    @GetMapping("/tareas-search")
+    public String tareasSearchActionView(@RequestParam Map<String, String> params, Model model) {
+        String usuario = params.get("usuario");
+        LocalDate fecha = null;
+        Boolean realizada = null;
+
+        if (params.get("fecha") != null && !params.get("fecha").isBlank()) {
+            fecha = LocalDate.parse(params.get("fecha"));
+        }
+
+        if (params.get("realizada") != null && !params.get("realizada").isBlank()) {
+            realizada = Boolean.valueOf(params.get("realizada"));
+        }
+
+        model.addAttribute("tareas", tareaRepository.findAll(usuario, fecha, realizada));
+        return "tarea_search_view";
+    }
+
+    @GetMapping("/tarea-detail")
+    public String tareaDetailActionView(@RequestParam int codigo, Model model) {
+        try {
+            model.addAttribute("tarea", tareaRepository.get(codigo));
+            return "tarea_detail_view";
+        } catch (NotFoundException e) {
+            model.addAttribute("mensaje", e.getMessage());
+            return "message_view";
+        }
+    }
+
+    @GetMapping("/tarea-delete")
+    public String tareaDeleteActionView(@RequestParam int codigo, Model model) {
+        try {
+            Tarea tarea = tareaRepository.delete(codigo);
+            model.addAttribute("mensaje", "Tasca " + tarea.getCodigo() + " eliminada amb exit");
+        } catch (NotFoundException e) {
+            model.addAttribute("mensaje", e.getMessage());
+        }
+
+        return "message_view";
     }
 
     @PostMapping("/tarea-add")
