@@ -2,6 +2,7 @@ package es.progcipfpbatoi.todolistspring.model.entities;
 
 import java.time.LocalDateTime;
 
+// Clase que representa una tarea dentro de la aplicacion.
 public class Tarea {
 
     private int codigo;
@@ -12,9 +13,11 @@ public class Tarea {
     private String categoria;
     private boolean realizada;
 
+    // Constructor vacio necesario para que algunas herramientas puedan crear el objeto.
     public Tarea() {
     }
 
+    // Constructor principal para crear una tarea con todos sus datos.
     public Tarea(int codigo, String descripcion, String usuario, LocalDateTime fechaVencimiento,
                  Prioridad prioridad, String categoria, boolean realizada) {
         this.codigo = codigo;
@@ -26,7 +29,7 @@ public class Tarea {
         this.realizada = realizada;
     }
 
-    // Constructor sencillo para mantener la plantilla inicial funcionando.
+    // Constructor sencillo para mantener la plantilla inicial funcionando con pocos datos.
     public Tarea(int codigo, String usuario, String descripcion) {
         this.codigo = codigo;
         this.usuario = usuario;

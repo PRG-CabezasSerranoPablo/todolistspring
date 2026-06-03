@@ -20,6 +20,7 @@ import java.util.ArrayList;
 @Repository
 public class SQLTareaDAO implements TareaDAO {
 
+    // Estos datos vienen del application.properties de la rama de MariaDB.
     @Value("${app.datasource.url}")
     private String url;
 
@@ -29,11 +30,13 @@ public class SQLTareaDAO implements TareaDAO {
     @Value("${app.datasource.password}")
     private String password;
 
+    // Abre una conexion con la base de datos cuando hace falta consultar o modificar datos.
     private Connection getConnection() throws SQLException {
         return DriverManager.getConnection(url, user, password);
     }
 
     @Override
+    // Inserta una tarea en la tabla tareas y guarda el codigo que genera MariaDB.
     public void add(Tarea tarea) throws SQLException {
         String sql = "INSERT INTO tareas(usuario, descripcion, fecha_vencimiento, prioridad, realizada, categoria_id) "
                 + "VALUES (?, ?, ?, ?, ?, NULL)";
@@ -55,6 +58,7 @@ public class SQLTareaDAO implements TareaDAO {
     }
 
     @Override
+    // Busca una tarea por codigo haciendo un LEFT JOIN para sacar tambien el nombre de la categoria.
     public Tarea get(int codTarea) throws SQLException, NotFoundException {
         String sql = "SELECT t.*, c.nombre AS categoria_nombre "
                 + "FROM tareas t LEFT JOIN categorias c ON t.categoria_id = c.id "
@@ -74,6 +78,7 @@ public class SQLTareaDAO implements TareaDAO {
     }
 
     @Override
+    // Consulta todas las tareas ordenadas por codigo.
     public ArrayList<Tarea> findAll() throws SQLException {
         String sql = "SELECT t.*, c.nombre AS categoria_nombre "
                 + "FROM tareas t LEFT JOIN categorias c ON t.categoria_id = c.id "
@@ -87,6 +92,7 @@ public class SQLTareaDAO implements TareaDAO {
     }
 
     @Override
+    // Monta una consulta con filtros opcionales segun lo que escriba el usuario en la web.
     public ArrayList<Tarea> findAll(String usuario, LocalDate fecha, Boolean realizada) throws SQLException {
         StringBuilder sql = new StringBuilder("SELECT t.*, c.nombre AS categoria_nombre "
                 + "FROM tareas t LEFT JOIN categorias c ON t.categoria_id = c.id WHERE 1 = 1");
@@ -121,6 +127,7 @@ public class SQLTareaDAO implements TareaDAO {
     }
 
     @Override
+    // Primero busca la tarea para comprobar que existe y despues la elimina.
     public Tarea delete(int codTarea) throws SQLException, NotFoundException {
         Tarea tarea = get(codTarea);
         String sql = "DELETE FROM tareas WHERE codigo = ?";
@@ -134,6 +141,7 @@ public class SQLTareaDAO implements TareaDAO {
         return tarea;
     }
 
+    // Convierte todas las filas del ResultSet en objetos Tarea.
     private ArrayList<Tarea> toTareas(ResultSet resultSet) throws SQLException {
         ArrayList<Tarea> tareas = new ArrayList<>();
 
@@ -144,6 +152,7 @@ public class SQLTareaDAO implements TareaDAO {
         return tareas;
     }
 
+    // Convierte una fila de la base de datos en un objeto Tarea de Java.
     private Tarea toTarea(ResultSet resultSet) throws SQLException {
         return new Tarea(
                 resultSet.getInt("codigo"),
@@ -156,6 +165,7 @@ public class SQLTareaDAO implements TareaDAO {
         );
     }
 
+    // Traduce el enum del proyecto al texto que esta guardado en MariaDB.
     private String prioridadToSql(Prioridad prioridad) {
         if (prioridad == Prioridad.MITJANA) {
             return "MEDIA";
@@ -168,6 +178,7 @@ public class SQLTareaDAO implements TareaDAO {
         return "ALTA";
     }
 
+    // Traduce el texto de MariaDB al enum que usa Java.
     private Prioridad prioridadFromSql(String prioridad) {
         if ("MEDIA".equals(prioridad)) {
             return Prioridad.MITJANA;

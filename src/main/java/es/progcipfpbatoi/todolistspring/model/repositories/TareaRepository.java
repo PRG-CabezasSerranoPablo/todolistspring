@@ -13,12 +13,15 @@ import java.util.ArrayList;
 @Repository
 public class TareaRepository {
 
+    // El repositorio usa un DAO para no depender directamente de como se guardan las tareas.
     private TareaDAO tareaDAO;
 
+    // Spring mete aqui el DAO que corresponde a esta rama del proyecto.
     public TareaRepository(TareaDAO tareaDAO) {
         this.tareaDAO = tareaDAO;
     }
 
+    // Guarda una tarea y convierte errores SQL en un error propio de la aplicacion.
     public void add(Tarea tarea) throws DatabaseErrorException {
         try {
             tareaDAO.add(tarea);
@@ -27,6 +30,7 @@ public class TareaRepository {
         }
     }
 
+    // Busca una tarea por su codigo.
     public Tarea get(int codTarea) throws NotFoundException, DatabaseErrorException {
         try {
             return tareaDAO.get(codTarea);
@@ -35,6 +39,7 @@ public class TareaRepository {
         }
     }
 
+    // Devuelve todas las tareas que hay guardadas.
     public ArrayList<Tarea> findAll() throws DatabaseErrorException {
         try {
             return tareaDAO.findAll();
@@ -43,10 +48,12 @@ public class TareaRepository {
         }
     }
 
+    // Busca por usuario y deja el resto de filtros vacios.
     public ArrayList<Tarea> findAll(String usuario) throws DatabaseErrorException {
         return findAll(usuario, null, null);
     }
 
+    // Busca tareas aplicando los filtros que se hayan rellenado en el formulario.
     public ArrayList<Tarea> findAll(String usuario, LocalDate fecha, Boolean realizada)
             throws DatabaseErrorException {
         try {
@@ -56,6 +63,7 @@ public class TareaRepository {
         }
     }
 
+    // Borra una tarea y devuelve la tarea borrada para poder mostrar informacion si hiciera falta.
     public Tarea delete(int codTarea) throws NotFoundException, DatabaseErrorException {
         try {
             return tareaDAO.delete(codTarea);
