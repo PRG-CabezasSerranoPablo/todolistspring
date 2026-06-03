@@ -19,30 +19,36 @@ import java.util.Map;
 @Controller
 public class TareaController {
 
+    // Repositorio donde se guardan las tareas de esta rama en memoria.
     @Autowired
     private TareaRepository tareaRepository;
 
+    // Muestra la pantalla principal del proyecto.
     @GetMapping("/")
     public String menuActionView() {
         return "menu_view";
     }
 
+    // Muestra el formulario para crear una tarea nueva.
     @GetMapping("/tarea-form")
     public String tareaFormActionView() {
         return "tarea_form_view";
     }
 
+    // Muestra el listado completo de tareas.
     @GetMapping("/tareas-list")
     public String tareasListActionView(Model model) {
         model.addAttribute("tareas", tareaRepository.findAll());
         return "tarea_list_view";
     }
 
+    // Muestra la pantalla de busqueda.
     @GetMapping("/tareas-buscar")
     public String tareasBuscarActionView() {
         return "tarea_search_view";
     }
 
+    // Recoge los filtros del formulario y busca las tareas que coinciden.
     @GetMapping("/tareas-search")
     public String tareasSearchActionView(@RequestParam Map<String, String> params, Model model) {
         String usuario = params.get("usuario");
@@ -61,6 +67,7 @@ public class TareaController {
         return "tarea_search_view";
     }
 
+    // Muestra los datos de una tarea concreta.
     @GetMapping("/tarea-detail")
     public String tareaDetailActionView(@RequestParam int codigo, Model model) {
         try {
@@ -73,6 +80,7 @@ public class TareaController {
         }
     }
 
+    // Borra una tarea y muestra un mensaje con el resultado.
     @GetMapping("/tarea-delete")
     public String tareaDeleteActionView(@RequestParam int codigo, Model model) {
         try {
@@ -87,6 +95,7 @@ public class TareaController {
         return "message_view";
     }
 
+    // Recibe los datos del formulario, crea el objeto Tarea y lo guarda.
     @PostMapping("/tarea-add")
     public String postAddAction(@RequestParam Map<String, String> params) {
         String descripcion = params.get("descripcion");

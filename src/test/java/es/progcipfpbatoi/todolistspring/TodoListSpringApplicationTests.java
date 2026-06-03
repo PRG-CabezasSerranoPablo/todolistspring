@@ -7,6 +7,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 class TodoListSpringApplicationTests {
 
 	@Test
+	// Comprueba que Spring puede cargar el proyecto sin errores.
 	void contextLoads() {
 	}
 
