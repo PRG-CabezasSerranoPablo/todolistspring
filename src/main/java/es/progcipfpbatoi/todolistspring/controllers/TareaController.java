@@ -69,7 +69,7 @@ public class TareaController {
 
     // Muestra los datos de una tarea concreta.
     @GetMapping("/tarea-detail")
-    public String tareaDetailActionView(@RequestParam int codigo, Model model) {
+    public String tareaDetailActionView(@RequestParam("codigo") int codigo, Model model) {
         try {
             model.addAttribute("tarea", tareaRepository.get(codigo));
             return "tarea_detail_view";
@@ -82,7 +82,7 @@ public class TareaController {
 
     // Borra una tarea y muestra un mensaje con el resultado.
     @GetMapping("/tarea-delete")
-    public String tareaDeleteActionView(@RequestParam int codigo, Model model) {
+    public String tareaDeleteActionView(@RequestParam("codigo") int codigo, Model model) {
         try {
             Tarea tarea = tareaRepository.delete(codigo);
             model.addAttribute("titulo", "Tasca eliminada");
